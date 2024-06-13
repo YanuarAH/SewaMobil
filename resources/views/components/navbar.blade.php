@@ -6,6 +6,7 @@
                     <a href='/'><h1 class="text-black text-xl">Sewa Mobil</h1></a>
                 </div>
             </div>
+            @guest
             <div class="hidden md:flex flex-1 justify-center">
                 <div class="flex items-baseline space-x-4">
                     <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
@@ -20,7 +21,35 @@
                     <a href='{{ route('login') }}' class="text-gray-700 hover:text-blue-700 hover:underline">Login</a>
                     <a href='{{ route('register') }}' class="ml-7 rounded-md px-3 py-2 text-sm font-medium bg-gray-600 text-white hover:bg-gray-300 hover:text-gray-700">Sign Up</a>
                 </div>
-            </div>  
+            </div>
+            @endguest  
+
+            @auth
+            <div class="pt-4 pb-1 border-t border-gray-200">
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+    
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Profile') }}
+                    </x-responsive-nav-link>
+    
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+    
+                        <x-responsive-nav-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
+            </div>
+            @endauth
+            
             <div class="-mr-2 flex md:hidden">
                 <!-- Mobile menu button -->
                 <button type="button" @click="isOpen = !isOpen"
